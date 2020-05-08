@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Control work 1</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: none;
+      outline: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      padding-top: 20px;
+      width: 100%;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .viewport {
+      width: 100%;
+      min-height: 300px;
+      background: rgb(197, 197, 197);
+      border-radius: 10px;
+      border: 1px solid rgb(167, 167, 167);
+      padding: 30px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .viewport__show > p {
+      margin-bottom: 10px;
+    }
+
+    .buttonLine {
+      width: 100%;
+      margin: 5px 0;
+      display: flex;
+    }
+
+    .alignCenter {
+      justify-content: center;
+    }
+
+    .alignLeft {
+      justify-content: Left;
+    }
+
+    button {
+      min-width: 70px;
+      padding: 10px;
+      margin: 2px;
+      box-sizing: border-box;
+      border-radius: 5px;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .edit {
+      background-color: #ffc74f;
+      color: black;
+    }
+
+    .style {
+      background-color: #0498b1;
+      color: white;
+    }
+
+    .add {
+      background-color: #b33937;
+      color: white;
+    }
+
+    .save {
+      background-color: #1a783d;
+      color: white;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      background-color: white;
+      box-sizing: border-box;
+      padding: 20px;
+      resize: none;
+    }
+
+    .editGroup {
+      display: none;
+    }
+
+    .styleGroup {
+      display: none;
+    }
+
+    .styleGroup__Line {
+      display: flex;
+      flex-direction: wrap;
+      margin-bottom: 8px;
+    }
+
+    .buttonGroup > input {
+      margin: 10px 5px 10px 25px;
+    }
+
+    .styleGroup__HeadText {
+      font-weight: 600;
+    }
+
+    .colorsPic {
+      padding: 10px;
+      background-color: rgb(100, 100, 100);
+      margin: 5px;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .dropDown__font {
+      padding: 10px;
+      background-color: rgb(255, 255, 255);
+      margin: 5px;
+      width: 230px;
+      border-radius: 5px;
+      color: rgb(65, 65, 65);
+    }
+
+    .colorPickerBox {
+      width: 210px;
+      height: 210px;
+      position: absolute;
+      right: 50px;
+      top: 50px;
+      flex-wrap: wrap;
+      display: none;
+    }
+
+    .colorPickerBox__Element {
+      width: calc(100% / 3);
+      height: calc(100% / 3);
+      box-sizing: border-box;
+    }
+
+    .viewport__choose {
+      display: none;
+    }
+    .viewport__choose--table {
+      display: none;
+      flex-direction: column;
+    }
+    .viewport__choose--list {
+      display: none;
+      flex-direction: column;
+    }
+
+    /* Стрічки для таблиць та листа */
+    .formLine {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .formLine input,
+    select {
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 5px;
+      color: rgb(65, 65, 65);
+    }
+    /* Ширина інпутів */
+    .widthWide {
+      width: 81%;
+    }
+    /* Кнопка */
+    .greenButton {
+      background-color: #1a783d;
+      color: white;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    table,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+
+  <!-- Content -->
+  <!-- ======================================= -->
+
+  <body>
+    <div class="container">
+      <!-- Viewport show - Вікно перегляду результатів стилізації та редагування -->
+      <!-- ======================================= -->
+      <div class="viewport viewport__show">
+        <p>Lorem ipsum dolor sit amet.</p>
+        <p>Lorem ipsum dolor sit amet.</p>
+        <p>Lorem ipsum dolor sit amet.</p>
+        <p>Lorem ipsum dolor sit amet.</p>
+        <p>Lorem ipsum dolor sit amet.</p>
+      </div>
+
+      <!-- Кнопик Edit та Style -->
+      <div class="buttonLine alignCenter">
+        <button class="edit">edit</button>
+        <button class="style">style</button>
+      </div>
+
+      <!-- Viewport edit - Вікно стилізації та редагування -->
+      <!-- ======================================= -->
+      <div class="viewport viewport__edit">
+        <!-- Edit section - Розділ редагування тексту -->
+        <div class="editGroup">
+          <textarea class="viewport__edit--area"></textarea>
+          <div class="buttonLine alignLeft">
+            <button class="add">add</button>
+            <button class="save">save</button>
+          </div>
+        </div>
+
+        <!-- Style section - Розділ стилізації тексту -->
+        <div class="styleGroup">
+          <p class="styleGroup__HeadText">Font Size:</p>
+          <div class="styleGroup__Line">
+            <form class="buttonGroup" name="fontSizeGroup">
+              <input type="radio" name="fontSize" value="12px" /> 12 px
+              <input type="radio" name="fontSize" value="14px" /> 14 px
+              <input type="radio" name="fontSize" value="16px" checked /> 16 px
+              <input type="radio" name="fontSize" value="18px" /> 18 px
+              <input type="radio" name="fontSize" value="20px" /> 20 px
+            </form>
+          </div>
+          <p class="styleGroup__HeadText">Font Family:</p>
+          <form class="styleGroup__Line">
+            <select class="dropDown__font">
+              <option value="">Choose option</option>
+              <option value="cursive">cursive</option>
+              <option value="fantasy">fantasy</option>
+              <option value="monospace">monospace</option>
+              <option value="sans-serif">sans-serif</option>
+            </select>
+          </form>
+
+          <p class="styleGroup__HeadText">Colors:</p>
+          <div class="styleGroup__Line">
+            <button class="colorsPic colorOfText" value="colorOfText">
+              Color of Text
+            </button>
+            <button class="colorsPic backgroundColor" value="backgroundColor">
+              Background color
+            </button>
+          </div>
+          <p class="styleGroup__HeadText">Style:</p>
+          <div class="styleGroup__Line">
+            <form class="buttonGroup" name="fontStyle">
+              <input type="checkbox" value="bold" /> Bold text
+              <input type="checkbox" value="italic" /> Cursive text
+            </form>
+          </div>
+
+          <!-- Палітра кольорів -->
+          <div class="colorPickerBox">
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+            <div class="colorPickerBox__Element"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add window - Додавання таблиці та списку -->
+      <div class="viewport viewport__choose">
+        <h2>Choose what you want:</h2>
+        <form name="addChoose" class="buttonGroup">
+          <input type="radio" name="add" value="table" /> table
+          <input type="radio" name="add" value="list" /> list
+        </form>
+
+        <!-- Додавання таблиці -->
+        <form class="viewport__choose--table" name="tableForm">
+          <div class="formLine">
+            <span>Count TR:</span>
+            <input
+              type="text"
+              name="countTR"
+              placeholder="Count TR:"
+              class="widthWide"
+            />
+          </div>
+
+          <div class="formLine">
+            <span>Count TD:</span>
+            <input
+              type="text"
+              name="countTD"
+              placeholder="Count TD:"
+              class="widthWide"
+            />
+          </div>
+          <h3>Add style to your table:</h3>
+          <div class="formLine">
+            <span>Width of TD:</span>
+            <input
+              type="text"
+              name="widthTD"
+              placeholder="Width of TD:"
+              class="widthWide"
+            />
+          </div>
+          <div class="formLine">
+            <span>Height of TD:</span>
+            <input
+              type="text"
+              name="heightTD"
+              placeholder="Height of TD:"
+              class="widthWide"
+            />
+          </div>
+          <div class="formLine">
+            <span>Width of border:</span>
+            <input
+              type="text"
+              placeholder="Width:"
+              class="widthSmall"
+              name="borderWidth"
+            />
+            <span>Type of border:</span>
+            <select class="widthSmall" name="borderType">
+              <option value="solid">solid</option>
+              <option value="dashed">dashed</option>
+              <option value="double">double</option>
+            </select>
+            <span>Color of border:</span>
+            <select class="widthSmall" name="borderColor">
+              <option value="black">black</option>
+              <option value="red">red</option>
+              <option value="blue">blue</option>
+              <option value="green">green</option>
+            </select>
+          </div>
+          <div class="buttonLine">
+            <button class="greenButton" name="createTable">Create table</button>
+          </div>
+        </form>
+
+        <!--  Додавання листа-->
+        <form class="viewport__choose--list" name="listForm">
+          <div class="formLine">
+            <span>Count Li:</span>
+            <input
+              type="text"
+              name="countLi"
+              placeholder="Count Li:"
+              class="widthWide"
+            />
+          </div>
+          <div class="formLine">
+            <span>Type of marks:</span>
+            <select name="marksType" class="widthWide">
+              <option value="circle">circle</option>
+              <option value="disc">disc</option>
+              <option value="square">square</option>
+            </select>
+          </div>
+          <div class="buttonLine">
+            <button class="greenButton" name="createList">Create list</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <!-- ======================================= -->
+    <script>
+      let getElement = (x) => document.querySelector(x);
+      let getElements = (x) => document.querySelectorAll(x);
+
+      let viewport__show = document.querySelector(".viewport__show");
+      // Перелік кольорів для палітри
+      let boxColors = [
+        "#D94445",
+        "#0071F0",
+        "#1E9045",
+        "#2E3337",
+        "#E3A804",
+        "#D94A7A",
+        "#CCCCCC",
+        "#593F9F",
+        "#0A7996",
+      ];
+
+      // Кнопки редагування та стилів
+      getElement(".edit").addEventListener("click", function () {
+        let j = getElement(".editGroup");
+        if (j.style.display == "block") {
+          j.style.display = "none";
+        } else {
+          j.style.display = "block";
+        }
+        getElement(".viewport__edit--area").value = getElement(
+          ".viewport__show"
+        ).innerHTML;
+
+        getElement(".styleGroup").style.display = "none";
+      });
+
+      getElement(".style").addEventListener("click", function () {
+        let j = getElement(".styleGroup");
+        if (j.style.display == "block") {
+          j.style.display = "none";
+        } else {
+          j.style.display = "block";
+        }
+        getElement(".editGroup").style.display = "none";
+      });
+
+      // Редагування тексту в textarea - Кнопка SAVE
+      getElement(".save").addEventListener("click", function () {
+        getElement(".viewport").innerHTML = getElement(
+          ".viewport__edit--area"
+        ).value;
+        getElement(".editGroup").style.display = "none";
+      });
+
+      // Додавання елементів у textarea - Кнопка ADD
+      getElement(".add").addEventListener("click", function () {
+        getElement(".viewport__choose").style.display = "block";
+        getElement(".viewport__edit").style.display = "none";
+        getElement(".viewport__show").style.display = "none";
+        getElement(".buttonLine").style.display = "none";
+      });
+
+      // Палітра кольорів та вибір кольору тексту та фону
+      let colorStatus = "";
+      getElement(".colorOfText").addEventListener("click", function () {
+        let j = getElement(".colorPickerBox");
+        colorStatus = this.value;
+        if (j.style.display == "flex") {
+          j.style.display = "none";
+        } else {
+          j.style.display = "flex";
+        }
+      });
+      getElement(".backgroundColor").addEventListener("click", function () {
+        let j = getElement(".colorPickerBox");
+        colorStatus = this.value;
+        if (j.style.display == "flex") {
+          j.style.display = "none";
+        } else {
+          j.style.display = "flex";
+        }
+      });
+
+      //   Вибір кольору з палітри
+      for (let i = 0; i < boxColors.length; i++) {
+        let colorBoxElement = getElements(".colorPickerBox__Element")[i];
+        colorBoxElement.style.backgroundColor = boxColors[i];
+        colorBoxElement.addEventListener("click", function () {
+          if (colorStatus == "colorOfText") {
+            viewport__show.style.color = boxColors[i];
+          } else if (colorStatus == "backgroundColor") {
+            viewport__show.style.backgroundColor = boxColors[i];
+          }
+          getElement(".colorPickerBox").style.display = "none";
+        });
+      }
+
+      // Стилізація тексту viewport через вікно style
+      //  =======================================
+      // Розмір шрифту
+      for (let i = 0; i < document.forms["fontSizeGroup"].length; i++) {
+        document.forms["fontSizeGroup"].elements[i].addEventListener(
+          "click",
+          function () {
+            viewport__show.style.fontSize = this.value;
+          }
+        );
+      }
+
+      // Стиль тексту
+      for (let i = 0; i < document.forms["fontStyle"].length; i++) {
+        document.forms["fontStyle"].elements[i].addEventListener(
+          "click",
+          function () {
+            if (this.checked) {
+              if (this.value == "bold") {
+                viewport__show.style.fontWeight = this.value;
+              } else if (this.value == "italic") {
+                viewport__show.style.fontStyle = this.value;
+              }
+            } else {
+              if (this.value == "bold") {
+                viewport__show.style.fontWeight = "";
+              } else if (this.value == "italic") {
+                viewport__show.style.fontStyle = "";
+              }
+            }
+          }
+        );
+      }
+
+      //   Вибір шрифта
+      getElement(".dropDown__font").addEventListener("change", function () {
+        for (let i = 0; i < getElement(".dropDown__font").length; i++) {
+          if (getElement(".dropDown__font")[i].selected) {
+            let fontFamilyPic = this.value;
+            for (let j = 0; j < viewport__show.children.length; j++) {
+              viewport__show.children[j].style.fontFamily = fontFamilyPic;
+            }
+          }
+        }
+      });
+      // // Нажаль по іншому не зміг додати шрифт. Також є проблема бо він не задіюється до таблиці та листа.
+
+      // Створення таблиці
+      document.forms["tableForm"].elements["createTable"].addEventListener(
+        "click",
+        function () {
+          event.preventDefault();
+
+          let countTR = document.forms["tableForm"].elements["countTR"].value;
+          let countTD = document.forms["tableForm"].elements["countTD"].value;
+
+          let widthTD = document.forms["tableForm"].elements["widthTD"].value;
+          let heightTD = document.forms["tableForm"].elements["heightTD"].value;
+          let borderWidth =
+            document.forms["tableForm"].elements["borderWidth"].value;
+
+          let borderType =
+            document.forms["tableForm"].elements["borderType"].value;
+          let borderColor =
+            document.forms["tableForm"].elements["borderColor"].value;
+
+          let table = "<table>";
+          for (let i = 0; i < countTR; i++) {
+            table += "<tr>";
+            for (let j = 0; j < countTD; j++) {
+              table += `<td style="width:${widthTD}px; height:${heightTD}px; border:${borderWidth}px ${borderType} ${borderColor}"> TD </td>`;
+            }
+            table += "</tr>";
+          }
+          table += "<table>";
+
+          getElement(".editGroup").style.display = "block";
+
+          getElement(".viewport__edit--area").value = getElement(
+            ".viewport__show"
+          ).innerHTML;
+          getElement(".viewport__edit--area").value += table;
+
+          getElement(".viewport__choose").style.display = "none";
+          getElement(".viewport__edit").style.display = "block";
+          getElement(".viewport__show").style.display = "block";
+          getElement(".buttonLine").style.display = "flex";
+        }
+      );
+
+      // Створення листа
+      document.forms["listForm"].elements["createList"].addEventListener(
+        "click",
+        function () {
+          event.preventDefault();
+
+          let countLi = document.forms["listForm"].elements["countLi"].value;
+          let marksType =
+            document.forms["listForm"].elements["marksType"].value;
+
+          let list = `<ul type=${marksType}>`;
+          for (let j = 0; j < countLi; j++) {
+            list += `<li > List string </li>`;
+          }
+          list += "</ul>";
+
+          getElement(".editGroup").style.display = "block";
+
+          getElement(".viewport__edit--area").value = getElement(
+            ".viewport__show"
+          ).innerHTML;
+          getElement(".viewport__edit--area").value += list;
+
+          getElement(".viewport__choose").style.display = "none";
+          getElement(".viewport__edit").style.display = "block";
+          getElement(".viewport__show").style.display = "block";
+          getElement(".buttonLine").style.display = "flex";
+        }
+      );
+
+      // Вибір редактора таблиці або списку
+      for (let i = 0; i < document.forms["addChoose"].length; i++) {
+        document.forms["addChoose"].elements[i].addEventListener(
+          "click",
+          function () {
+            if (this.value == "table") {
+              getElement(".viewport__choose--table").style.display = "flex";
+              getElement(".viewport__choose--list").style.display = "none";
+            } else if (this.value == "list") {
+              getElement(".viewport__choose--table").style.display = "none";
+              getElement(".viewport__choose--list").style.display = "flex";
+            }
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

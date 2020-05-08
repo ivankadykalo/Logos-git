@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <title>JS Control Work 2</title>
+    <!-- Стиль документу -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        box-sizing: border-box;
+      }
+
+      header {
+        width: 100%;
+        min-height: 90px;
+        background-color: #68696a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .nav__edit {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .nav__style {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      main {
+        padding: 10px 60px;
+        min-height: calc(100%-90px);
+      }
+      .content__show {
+        height: 100%;
+        width: 100%;
+      }
+      .content__edit {
+        height: 100%;
+        width: 100%;
+        display: none;
+      }
+      textarea {
+        width: 100%;
+        height: calc(100vh - 90px - 25px);
+        resize: none;
+        font-size: 16px;
+      }
+
+      .btn-secondary {
+        background-color: #fff;
+        color: black;
+        border: none;
+        min-width: 45px;
+      }
+      .btn-secondary:hover,
+      .btn-secondary:focus {
+        background-color: #c3c4c5;
+        color: black;
+      }
+      .bg-color__box {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        margin: 2px;
+        cursor: pointer;
+      }
+      .bg-img__box {
+        width: 130px;
+        height: 60px;
+        border-radius: 4px;
+        margin: 2px;
+        cursor: pointer;
+      }
+      #bg-img__container {
+        display: none;
+      }
+      #bg-download__container {
+        display: none;
+      }
+      .bg-box__container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      #valid-feedback {
+        margin: 0 0 0 10px;
+      }
+      .login-form__container {
+        padding: 15px;
+      }
+
+      .width-lg {
+        max-width: 700px;
+      }
+      .width-sm {
+        max-width: 300px;
+      }
+    </style>
+    <script
+      src="https://kit.fontawesome.com/4f8eef986d.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <!-- Група кнопок редактора стилю -->
+      <div class="nav__style">
+        <div
+          class="btn-toolbar"
+          role="toolbar"
+          aria-label="Toolbar with button groups"
+        >
+          <!-- Запуск редактора тексту -->
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="edit-html"
+              disabled
+            >
+              <i class="fas fa-code"></i>
+            </button>
+          </div>
+          <!-- Стилі тексту -->
+          <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button type="button" class="btn btn-secondary" id="bold">
+              <i class="fas fa-bold"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" id="italic">
+              <i class="fas fa-italic"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" id="underline">
+              <i class="fas fa-underline"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" id="strikethrough">
+              <i class="fas fa-strikethrough"></i>
+            </button>
+          </div>
+          <!-- Вирівнювання тексту -->
+          <div class="btn-group mr-2" role="group" aria-label="Third group">
+            <button type="button" class="btn btn-secondary" id="align-left">
+              <i class="fas fa-align-left"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" id="align-center">
+              <i class="fas fa-align-center"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" id="align-right">
+              <i class="fas fa-align-right"></i>
+            </button>
+          </div>
+          <!-- Розмір шрифта, сімейство шрифта, колір тексту, фон -->
+          <div class="btn-group mr-2" role="group" aria-label="Forth group">
+            <!-- Сімейство тексту -->
+            <div class="btn-group" role="group">
+              <button
+                id="font-family-button"
+                type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-font"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="font-family-button">
+                <a class="dropdown-item font-family" href="#">Arial</a>
+                <a class="dropdown-item font-family" href="#">Georgia</a>
+                <a class="dropdown-item font-family" href="#">Impact</a>
+                <a class="dropdown-item font-family" href="#">Tahoma</a>
+                <a class="dropdown-item font-family" href="#"
+                  >Times New Roman</a
+                >
+                <a class="dropdown-item font-family" href="#">Verdana</a>
+              </div>
+            </div>
+            <!-- Розмір тексту -->
+            <div class="btn-group" role="group">
+              <button
+                id="font-size-button"
+                type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-text-height"></i>
+              </button>
+              <div
+                class="dropdown-menu"
+                aria-labelledby="font-size-button"
+                id="font-size"
+              >
+                <a class="dropdown-item font-size" href="#">12px</a>
+                <a class="dropdown-item font-size" href="#">14px</a>
+                <a class="dropdown-item font-size" href="#">16px</a>
+                <a class="dropdown-item font-size" href="#">18px</a>
+                <a class="dropdown-item font-size" href="#">20px</a>
+                <a class="dropdown-item font-size" href="#">22px</a>
+                <a class="dropdown-item font-size" href="#">25px</a>
+                <a class="dropdown-item font-size" href="#">30px</a>
+              </div>
+            </div>
+            <!-- Колір тексту -->
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="font-color"
+              data-toggle="modal"
+              data-target="#modal-font-color"
+            >
+              <i class="fas fa-palette"></i>
+            </button>
+            <!-- Колір фону -->
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-toggle="modal"
+              data-target="#modal-bg-color"
+            >
+              <i class="fas fa-image"></i>
+            </button>
+          </div>
+          <!-- Запуск форми логіну -->
+          <div class="btn-group" role="group" aria-label="Fifth group">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="login"
+              data-toggle="modal"
+              data-target="#login-form"
+            >
+              <!-- data-target="#login-out-form" -->
+              <i class="fas fa-lock"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Група кнопок редактора HTML тексту -->
+      <div class="nav__edit">
+        <div
+          class="btn-toolbar"
+          role="toolbar"
+          aria-label="Toolbar with button groups"
+        >
+          <div class="btn-group" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary" id="save">
+              <i class="fas fa-save"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="table"
+              data-toggle="modal"
+              data-target="#modal-table"
+            >
+              <i class="fas fa-table"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="olist"
+              data-toggle="modal"
+              data-target="#modal-ol-list"
+            >
+              <i class="fas fa-list-ol"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="ulist"
+              data-toggle="modal"
+              data-target="#modal-ul-list"
+            >
+              <i class="fas fa-list-ul"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Основий контент -->
+    <main>
+      <div class="content__show">
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+      </div>
+      <div class="content__edit">
+        <textarea id="textarea"></textarea>
+      </div>
+    </main>
+
+    <!-- ================================================== -->
+    <!-- МОДАЛЬНІ ВІКНА -->
+    <!-- ================================================== -->
+
+    <!-- Модальне вікно колір тексту -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-font-color">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Choose text color</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body bg-box__container" id="color-box__font"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Модальне вікно колір Фону -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-bg-color">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Choose background color or image</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" id="colors">Colors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="images">Images</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="files">Files</a>
+            </li>
+          </ul>
+          <div
+            class="modal-body bg-box__container"
+            id="bg-color__container"
+          ></div>
+          <div
+            class="modal-body bg-box__container"
+            id="bg-img__container"
+          ></div>
+          <div class="modal-body bg-box__container" id="bg-download__container">
+            <div class="custom-file">
+              <input
+                type="file"
+                class="custom-file-input"
+                id="bg-img-download"
+                accept="image/*"
+              />
+              <label
+                class="custom-file-label"
+                for="bg-img-download"
+                aria-describedby="inputGroupFileAddon02"
+                >Choose file</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модал створення таблиць -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-table">
+      <div class="modal-dialog width-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create table</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col">
+                <label for="exampleFormControlInput1">Count TR:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tr-count"
+                  placeholder="Type here.."
+                />
+              </div>
+              <div class="form-group col">
+                <label for="exampleFormControlInput1">Count TD:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="td-count"
+                  placeholder="Type here.."
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="exampleFormControlInput1">Width of TD:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="td-width"
+                  placeholder="Type here.."
+                />
+              </div>
+              <div class="form-group col">
+                <label for="exampleFormControlInput1">Height of TD:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="td-height"
+                  placeholder="Type here.."
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col">
+                <label for="exampleFormControlInput1">Width of border:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="border-width"
+                  placeholder="Type here.."
+                />
+              </div>
+              <div class="form-group col">
+                <div class="row">
+                  <div class="col">
+                    <label for="exampleFormControlSelect1"
+                      >Style of border:</label
+                    >
+                    <select class="form-control" id="border-style">
+                      <option value="none" selected disabled hidden
+                        >choose style</option
+                      >
+                      <option>dotted</option>
+                      <option>dashed</option>
+                      <option>solid</option>
+                      <option>double</option>
+                      <option>groove</option>
+                      <option>ridge</option>
+                      <option>inset</option>
+                      <option>outset</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <label for="exampleFormControlSelect1"
+                      >Color of border:</label
+                    >
+                    <select class="form-control" id="border-color">
+                      <option value="none" selected disabled hidden
+                        >choose color</option
+                      >
+                      <option>black</option>
+                      <option>red</option>
+                      <option>green</option>
+                      <option>blue</option>
+                      <option>yellow</option>
+                      <option>white</option>
+                      <option>gray</option>
+                      <option>pink</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col">
+                <p class="text-danger" id="valid-table"></p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col">
+                <button
+                  type="button"
+                  class="btn btn-danger w-100"
+                  id="table-reset"
+                >
+                  Reset
+                </button>
+              </div>
+              <div class="form-group col">
+                <button
+                  type="button"
+                  class="btn btn-success w-100"
+                  id="table-create"
+                >
+                  Create table
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальне вікно створення нумерованого списку -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-ol-list">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create OL</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Count li item:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="count-li-ol"
+                placeholder="Type here.."
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Type mark of list:</label>
+              <select class="form-control" id="ol-mark-type">
+                <option selected disabled hidden>choose style</option>
+                <option>a</option>
+                <option>A</option>
+                <option>i</option>
+                <option>I</option>
+                <option>1</option>
+              </select>
+            </div>
+            <p class="text-danger" id="valid-ol-list"></p>
+
+            <div class="modal-body row">
+              <button
+                type="button"
+                class="btn btn-danger col mr-2"
+                id="ol-list-reset"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                class="btn btn-success col"
+                id="ol-list-create"
+              >
+                Create list
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальне вікно створення ненумерованого списку -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-ul-list">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create OL</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Count li item:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="count-li-ul"
+                placeholder="Type here.."
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Type mark of list:</label>
+              <select class="form-control" id="ul-mark-type">
+                <option selected disabled hidden>choose UI type mark</option>
+                <option>circle</option>
+                <option>disk</option>
+                <option>square</option>
+              </select>
+            </div>
+            <p class="text-danger" id="valid-ul-list"></p>
+
+            <div class="modal-body row">
+              <button
+                type="button"
+                class="btn btn-danger col mr-2"
+                id="ul-list-reset"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                class="btn btn-success col"
+                id="ul-list-create"
+              >
+                Create list
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальне вікно Логін -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="login-form">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title mx-auto">Sign In</h5>
+          </div>
+          <div class="login-form__container">
+            <form class="needs-validation" novalidate>
+              <div class="form-row">
+                <div class="col-md-12 mb-3 w-100">
+                  <input
+                    type="text"
+                    placeholder="Login here.."
+                    class="form-control"
+                    id="sign-in__login"
+                    required
+                  />
+                </div>
+                <div class="col-md-12 mb-3 w-100">
+                  <input
+                    type="password"
+                    placeholder="Password here.."
+                    class="form-control"
+                    id="password"
+                    required
+                  />
+                </div>
+                <p class="text-danger" id="valid-feedback"></p>
+              </div>
+              <div class="form-group"></div>
+              <button
+                class="btn btn-primary w-100"
+                type="submit"
+                id="sign-in-button"
+              >
+                Sign in
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальне вікно Логін ВИХІД -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="login-out-form">
+      <div class="modal-dialog width-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="login-form__container">
+            <form class="needs-validation row modal-body" novalidate>
+              <button
+                class="btn btn-dark mr-2 col"
+                type="submit"
+                id="sign-cancel-button"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-danger col"
+                type="submit"
+                id="sign-out-button"
+                data-dismiss="modal"
+              >
+                Sign out
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================== -->
+    <!-- Скрипт -->
+    <!-- ================================================== -->
+    <script>
+      const getElement = (x) => document.querySelector(x);
+      const getElements = (x) => document.querySelectorAll(x);
+      const contentShow = getElement(".content__show");
+      const contentEdit = getElement(".content__edit");
+      const textarea = getElement("#textarea");
+      const regExNumber = new RegExp("(?=.*[0-9])");
+      const loginPassword = "admin";
+
+      // Масив кольорів
+      let colorsArray = [
+        "#0EA899",
+        "#068F83",
+        "#22B670",
+        "#1D9A61",
+        "#2991DC",
+        "#2179BA",
+        "#9C63B8",
+        "#9151AE",
+        "#324761",
+        "#2B3D4F",
+        "#F5BB07",
+        "#FA9A08",
+        "#EE821C",
+        "#DE5B00",
+        "#F6583C",
+        "#CC452A",
+        "#EDEEEF",
+        "#BDC3C3",
+        "#97A2A1",
+        "#80898D",
+        "#010001",
+      ];
+      // Масив картинок
+      let imgArray = [
+        'url("https://images.unsplash.com/photo-1588263573291-94fe84e641a3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1001&q=80")',
+        'url("https://images.unsplash.com/photo-1588263574451-91d48dd0b702?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1587629956550-4f451c1655f1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1588263823647-ce3546d42bfe?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1588263574759-f89311fe1e1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1588263823597-428cf7ab104a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjY1MDE0fQ&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1588263269806-7895da01d3f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1588263822689-7c086080d864?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+        'url("https://images.unsplash.com/photo-1587629329288-949a7cbefb89?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")',
+      ];
+
+      // ==================================================
+      // Кнопки панелі стилів
+      // ==================================================
+
+      // Bold текст
+      getElement("#bold").addEventListener("click", function () {
+        if (contentShow.style.fontWeight != "bold") {
+          contentShow.style.fontWeight = "bold";
+        } else {
+          contentShow.style.fontWeight = "";
+        }
+      });
+      // Italic текст
+      getElement("#italic").addEventListener("click", function () {
+        if (contentShow.style.fontStyle != "italic") {
+          contentShow.style.fontStyle = "italic";
+        } else {
+          contentShow.style.fontStyle = "";
+        }
+      });
+      // Підкреслений текст
+      getElement("#underline").addEventListener("click", function () {
+        if (contentShow.style.textDecoration != "underline") {
+          contentShow.style.textDecoration = "underline";
+        } else {
+          contentShow.style.textDecoration = "";
+        }
+      });
+      // Перекреслений текст
+      getElement("#strikethrough").addEventListener("click", function () {
+        if (contentShow.style.textDecoration != "line-through") {
+          contentShow.style.textDecoration = "line-through";
+        } else {
+          contentShow.style.textDecoration = "";
+        }
+      });
+      // Вирівняти наліво
+      getElement("#align-left").addEventListener("click", function () {
+        contentShow.style.textAlign = "left";
+      });
+      // Вирівняти по центру
+      getElement("#align-center").addEventListener("click", function () {
+        contentShow.style.textAlign = "center";
+      });
+      // Вирівняти направо
+      getElement("#align-right").addEventListener("click", function () {
+        contentShow.style.textAlign = "right";
+      });
+      // Вибір сімейства шрифта
+      getElements(".font-family").forEach((element) => {
+        element.style.fontFamily = element.innerHTML;
+        element.addEventListener("click", function () {
+          contentShow.style.fontFamily = this.innerHTML;
+        });
+      });
+      // Вибір розміру шрифта
+      getElements(".font-size").forEach((element) => {
+        element.style.fontSize = element.innerHTML;
+        element.addEventListener("click", function () {
+          contentShow.style.fontSize = this.innerHTML;
+        });
+      });
+
+      // Вибір кольору шрифта
+      colorsArray.forEach((element) => {
+        let div = document.createElement("div");
+        div.classList = "bg-color__box";
+        div.style.backgroundColor = element;
+        getElement("#color-box__font").appendChild(div);
+
+        div.addEventListener("click", function () {
+          contentShow.style.color = this.style.backgroundColor;
+        });
+      });
+      // Вибір кольору заднього фону
+      colorsArray.forEach((element) => {
+        let div = document.createElement("div");
+        div.classList = "bg-color__box";
+        div.style.background = element;
+        getElement("#bg-color__container").appendChild(div);
+
+        div.addEventListener("click", function () {
+          getElement("body").style.background = this.style.background;
+        });
+      });
+      // Вибір картинки заднього фону
+      imgArray.forEach((element) => {
+        let div = document.createElement("div");
+        div.classList = "bg-img__box";
+        div.style.background = element;
+        div.style.backgroundPosition = "center";
+        div.style.backgroundSize = "cover";
+        div.style.backgroundRepeat = "no-repeat";
+
+        getElement("#bg-img__container").appendChild(div);
+
+        div.addEventListener("click", function () {
+          getElement("body").style.background = this.style.background;
+          getElement("body").style.backgroundPosition = "center";
+          getElement("body").style.backgroundSize = "cover";
+          getElement("body").style.backgroundRepeat = "no-repeat";
+        });
+      });
+
+      // Кнопки меню вибору типу заднього фону
+      getElement("#colors").addEventListener("click", function () {
+        getElement("#colors").classList.add("active");
+        getElement("#images").classList.remove("active");
+        getElement("#files").classList.remove("active");
+        getElement("#bg-color__container").style.display = "flex";
+        getElement("#bg-img__container").style.display = "none";
+        getElement("#bg-download__container").style.display = "none";
+      });
+      getElement("#images").addEventListener("click", function () {
+        getElement("#images").classList.add("active");
+        getElement("#colors").classList.remove("active");
+        getElement("#files").classList.remove("active");
+        getElement("#bg-img__container").style.display = "flex";
+        getElement("#bg-color__container").style.display = "none";
+        getElement("#bg-download__container").style.display = "none";
+      });
+      getElement("#files").addEventListener("click", function () {
+        getElement("#files").classList.add("active");
+        getElement("#images").classList.remove("active");
+        getElement("#colors").classList.remove("active");
+        getElement("#bg-download__container").style.display = "flex";
+        getElement("#bg-img__container").style.display = "none";
+        getElement("#bg-color__container").style.display = "none";
+      });
+
+      // Завантаження картинки фону
+      getElement("#bg-img-download").addEventListener("change", function () {
+        let file = getElement("#bg-img-download").files[0];
+        let reader = new FileReader();
+        reader.onloadend = function () {
+          getElement("body").style.background = "url(" + reader.result + ")";
+          getElement("body").style.backgroundPosition = "center";
+          getElement("body").style.backgroundSize = "cover";
+          getElement("body").style.backgroundRepeat = "no-repeat";
+        };
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Кнопка редактора HTML
+      getElement("#edit-html").addEventListener("click", function () {
+        textarea.value = contentShow.innerHTML;
+        getElement(".nav__style").style.display = "none";
+        getElement(".nav__edit").style.display = "flex";
+        contentShow.style.display = "none";
+        contentEdit.style.display = "block";
+      });
+
+      // Кнопка збереження редагованого HTML
+      getElement("#save").addEventListener("click", function () {
+        contentShow.innerHTML = textarea.value;
+        textarea.value = "";
+        getElement(".nav__edit").style.display = "none";
+        getElement(".nav__style").style.display = "flex";
+        contentShow.style.display = "block";
+        contentEdit.style.display = "none";
+      });
+
+      // Форма для логіну LOGIN
+      getElement("#sign-in-button").addEventListener("click", function () {
+        event.preventDefault();
+
+        if (
+          getElement("#sign-in__login").value == loginPassword &&
+          getElement("#password").value == loginPassword
+        ) {
+          getElement("#edit-html").disabled = false;
+          getElement("#valid-feedback").innerHTML = "";
+
+          getElement("#login").setAttribute("data-target", "#login-out-form");
+          getElement("#sign-in-button").setAttribute("data-dismiss", "modal");
+
+          getElement(".fa-lock").classList.add("fa-unlock");
+          getElement(".fa-lock").classList.remove("fa-lock");
+
+          getElement("#sign-in__login").classList.remove("is-invalid");
+          getElement("#password").classList.remove("is-invalid");
+        } else if (
+          getElement("#sign-in__login").value == "" ||
+          getElement("#password").value == ""
+        ) {
+          getElement("#valid-feedback").innerHTML = "Value is empty";
+          getElement("#sign-in__login").classList.add("is-invalid");
+          getElement("#password").classList.add("is-invalid");
+        } else {
+          getElement("#valid-feedback").innerHTML =
+            "Please check your login or password";
+          getElement("#sign-in__login").classList.add("is-invalid");
+          getElement("#password").classList.add("is-invalid");
+        }
+      });
+      // Кнопка Sign out
+      getElement("#sign-out-button").addEventListener("click", function () {
+        getElement("#edit-html").disabled = true;
+        getElement(".fa-unlock").classList.add("fa-lock");
+        getElement(".fa-unlock").classList.remove("fa-unlock");
+        getElement("#login").setAttribute("data-target", "#login-form");
+        getElement("#sign-in-button").removeAttribute("data-dismiss");
+
+        for (let i = 0; i < getElements("#login-form input").length; i++) {
+          getElements("#login-form input")[i].value = "";
+
+          getElements("#login-form input")[i].classList.remove("is-valid");
+          getElements("#login-form input")[i].classList.remove("is-invalid");
+        }
+      });
+
+      // Кнопка Створення таблиці CREATE
+      getElement("#table-create").addEventListener("click", function () {
+        let trCount = getElement("#tr-count").value;
+        let tdCount = getElement("#td-count").value;
+        let tdWidth = getElement("#td-width").value;
+        let TDheight = getElement("#td-height").value;
+        let borderWidth = getElement("#border-width").value;
+        let borderStyle = getElement("#border-style").value;
+        let borderColor = getElement("#border-color").value;
+        let table = "<table>";
+        for (let i = 0; i < trCount; i++) {
+          table += "<tr>";
+          for (let j = 0; j < tdCount; j++) {
+            table += `<td style="width:${tdWidth}px; height:${TDheight}px; border:${borderWidth}px ${borderStyle} ${borderColor}"> TD </td>`;
+          }
+          table += "</tr>";
+        }
+        table += "<table>";
+        // Цикл перевірки данних
+        for (let i = 0; i < getElements("#modal-table input").length; i++) {
+          if (regExNumber.test(getElements("#modal-table input")[i].value)) {
+            textarea.value += table;
+            getElements("#modal-table input")[i].classList.add("is-valid");
+            getElements("#modal-table input")[i].classList.remove("is-invalid");
+            getElement("#valid-table").innerHTML = "";
+          } else {
+            getElements("#modal-table input")[i].classList.add("is-invalid");
+            getElements("#modal-table input")[i].classList.remove("is-valid");
+            getElement("#valid-table").innerHTML = "Invalid value";
+          }
+        }
+      });
+
+      // Кнопка Обнулення таблиці RESET
+      getElement("#table-reset").addEventListener("click", function () {
+        getElement("#tr-count").value = "";
+        getElement("#td-count").value = "";
+        getElement("#td-width").value = "";
+        getElement("#td-height").value = "";
+        getElement("#border-width").value = "";
+        getElement("#border-style").value = "";
+        getElement("#border-color").value = "";
+
+        for (let i = 0; i < getElements("#modal-table input").length; i++) {
+          getElements("#modal-table input")[i].classList.remove("is-valid");
+          getElements("#modal-table input")[i].classList.remove("is-invalid");
+          getElement("#valid-table").innerHTML = "";
+        }
+      });
+
+      // Кнопка створення OL списку
+      getElement("#ol-list-create").addEventListener("click", function () {
+        let countLi = getElement("#count-li-ol").value;
+        let markType = getElement("#ol-mark-type").value;
+
+        let list = `<ol type=${markType}>`;
+        for (let j = 0; j < countLi; j++) {
+          list += `<li > List string </li>`;
+        }
+        list += "</ol>";
+
+        if (regExNumber.test(getElement("#count-li-ol").value)) {
+          getElement("#count-li-ol").classList.add("is-valid");
+          getElement("#count-li-ol").classList.remove("is-invalid");
+          getElement("#valid-ol-list").innerHTML = "";
+
+          textarea.value += list;
+        } else {
+          getElement("#count-li-ol").classList.add("is-invalid");
+          getElement("#valid-ol-list").innerHTML = "Invalid value";
+        }
+      });
+
+      // Кнопка reset OL списку
+      getElement("#ol-list-reset").addEventListener("click", function () {
+        getElement("#count-li-ol").value = "";
+        getElement("#ol-mark-type").value = "";
+        getElement("#count-li-ol").classList.remove("is-valid");
+        getElement("#count-li-ol").classList.remove("is-invalid");
+        getElement("#valid-ol-list").innerHTML = "";
+      });
+
+      // Кнопка створення UL списку
+      getElement("#ul-list-create").addEventListener("click", function () {
+        let countLi = getElement("#count-li-ul").value;
+        let markType = getElement("#ul-mark-type").value;
+
+        let list = `<ul type=${markType}>`;
+        for (let j = 0; j < countLi; j++) {
+          list += `<li > List string </li>`;
+        }
+        list += "</ul>";
+
+        if (regExNumber.test(getElement("#count-li-ul").value)) {
+          getElement("#count-li-ul").classList.add("is-valid");
+          getElement("#count-li-ul").classList.remove("is-invalid");
+          getElement("#valid-ul-list").innerHTML = "";
+
+          textarea.value += list;
+        } else {
+          getElement("#count-li-ul").classList.add("is-invalid");
+          getElement("#valid-ul-list").innerHTML = "Invalid value";
+        }
+      });
+
+      // Кнопка reset UL списку
+      getElement("#ul-list-reset").addEventListener("click", function () {
+        getElement("#count-li-ul").value = "";
+        getElement("#ul-mark-type").value = "";
+        getElement("#count-li-ul").classList.remove("is-valid");
+        getElement("#count-li-ul").classList.remove("is-invalid");
+        getElement("#valid-ul-list").innerHTML = "";
+      });
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
